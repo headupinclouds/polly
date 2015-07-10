@@ -111,6 +111,7 @@ if platform.system() == 'Linux':
 
 if platform.system() == 'Darwin':
   toolchain_table += [
+      Toolchain('ios-8-4-libcxx-hidden', 'Xcode', ios_version='8.4'),
       Toolchain('ios-8-4-libcxx', 'Xcode', ios_version='8.4'),
       Toolchain('ios-8-2', 'Xcode', ios_version='8.2'),
       Toolchain('ios-8-2-libcxx', 'Xcode', ios_version='8.2'),
@@ -141,6 +142,7 @@ if os.name == 'posix':
       Toolchain('gcc-pic', 'Unix Makefiles'),
       Toolchain('gcc-4-8', 'Unix Makefiles'),
       Toolchain('libcxx', 'Unix Makefiles'),
+      Toolchain('libcxx-64', 'Unix Makefiles'),
       Toolchain('libcxx-omp', 'Unix Makefiles'),
       Toolchain('sanitize-address', 'Unix Makefiles'),
   ]
