@@ -47,6 +47,7 @@ toolchain_table = [
     Toolchain('default', ''),
     Toolchain('android-ndk-r10e-api-16-armeabi-v7a-neon', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-16-armeabi-v7a-neon-clang-35', 'Unix Makefiles'),
+    Toolchain('android-ndk-r10e-api-19-armeabi-v7a-neon', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-armeabi-v7a', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-armeabi-v7a-neon', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-armeabi-v7a-neon-clang-35', 'Unix Makefiles'),
@@ -54,7 +55,8 @@ toolchain_table = [
     Toolchain('android-ndk-r10e-api-21-arm64-v8a-gcc-49', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-arm64-v8a-clang-35', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-x86', 'Unix Makefiles'),
-    Toolchain('android-ndk-r10e-api-8-armeabi-v7a', 'Unix Makefiles')
+    Toolchain('android-ndk-r10e-api-8-armeabi-v7a', 'Unix Makefiles'),
+    Toolchain('raspberrypi2-cxx11', 'Unix Makefiles')
 ]
 
 if os.name == 'nt':
@@ -111,8 +113,10 @@ if platform.system() == 'Linux':
 
 if platform.system() == 'Darwin':
   toolchain_table += [
-      Toolchain('ios-8-4-libcxx-hidden', 'Xcode', ios_version='8.4'),
-      Toolchain('ios-8-4-libcxx', 'Xcode', ios_version='8.4'),
+      Toolchain('ios-8-4', 'Xcode', ios_version='8.4'),
+      Toolchain('ios-8-4-arm64', 'Xcode', ios_version='8.4'),
+      Toolchain('ios-8-4-armv7', 'Xcode', ios_version='8.4'),
+      Toolchain('ios-8-4-armv7s', 'Xcode', ios_version='8.4'),
       Toolchain('ios-8-2', 'Xcode', ios_version='8.2'),
       Toolchain('ios-8-2-libcxx', 'Xcode', ios_version='8.2'),
       Toolchain('ios-8-2-i386-arm64', 'Xcode', ios_version='8.2'),
@@ -139,6 +143,7 @@ if os.name == 'posix':
       Toolchain('clang-lto', 'Unix Makefiles'),
       Toolchain('clang-libstdcxx', 'Unix Makefiles'),
       Toolchain('gcc', 'Unix Makefiles'),
+      Toolchain('gcc-gold', 'Unix Makefiles'),
       Toolchain('gcc-pic', 'Unix Makefiles'),
       Toolchain('gcc-4-8', 'Unix Makefiles'),
       Toolchain('libcxx', 'Unix Makefiles'),

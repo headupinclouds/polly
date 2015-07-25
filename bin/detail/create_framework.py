@@ -23,7 +23,7 @@ def get_libname_soversion(libs):
       return x
   sys.exit('Unexpected version/soversion format: {}'.format(libs))
 
-def run(install_dir, framework_dir, ios, polly_root, logging):
+def run(install_dir, framework_dir, ios, polly_root, device, logging):
   libs_path = os.path.join(install_dir, 'lib')
   libs = glob.glob(os.path.join(libs_path, '*'))
   try:
@@ -108,10 +108,26 @@ def run(install_dir, framework_dir, ios, polly_root, logging):
     ]
     detail.call.call(link, logging)
   else:
+    framework_plist = os.path.join(framework_dir, 'Info.plist')
     shutil.copy(
         os.path.join(polly_root, 'scripts', 'Info.plist'),
-        framework_dir
+        framework_plist
     )
+    plist_text = open(framework_plist).read()
+    plist_text = re.sub(r'__MINIMUM_OS_VERSION__', ios, plist_text)
+    plist_text = re.sub(r'__BUNDLE_EXECUTABLE__', framework_name, plist_text)
+    open(framework_plist, 'w').write(plist_text)
+    if device:
+      detail.call.call(
+          ['lipo', '-remove', 'i386', '-output', framework_lib, framework_lib],
+          logging,
+          ignore=True
+      )
+      detail.call.call(
+          ['lipo', '-remove', 'x86_64', '-output', framework_lib, framework_lib],
+          logging,
+          ignore=True
+      )
     sign_cmd = [
         'codesign', '--force', '--sign', 'iPhone Developer', framework_dir
     ]

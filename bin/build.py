@@ -20,6 +20,7 @@ import detail.open_project
 import detail.osx_dev_root
 import detail.pack_command
 import detail.test_command
+import detail.timer
 import detail.toolchain_name
 import detail.toolchain_table
 import detail.verify_mingw_path
@@ -59,6 +60,8 @@ parser.add_argument(
 )
 
 parser.add_argument('--test', action='store_true', help="Run ctest after build")
+parser.add_argument('--test-xml', help="Save ctest output to xml")
+
 parser.add_argument('--pack', action='store_true', help="Run cpack after build")
 parser.add_argument(
     '--nobuild', action='store_true', help="Do not build (only generate)"
@@ -74,7 +77,9 @@ parser.add_argument(
     '--framework', action='store_true', help="Create framework"
 )
 parser.add_argument(
-    '--strip', action='store_true', help="Run strip/install cmake targets"
+    '--framework-device',
+    action='store_true',
+    help="Create framework for device (exclude simulator architectures)"
 )
 parser.add_argument(
     '--clear',
@@ -163,12 +168,12 @@ print("Build dir: {}".format(build_dir))
 build_dir_option = "-B{}".format(build_dir)
 
 install_dir = os.path.join(cdir, '_install', polly_toolchain)
-local_install = args.install or args.framework
+local_install = args.install or args.framework or args.framework_device
 strip_install = args.strip
 if local_install:
   install_dir_option = "-DCMAKE_INSTALL_PREFIX={}".format(install_dir)
 
-if args.framework and platform.system() != 'Darwin':
+if (args.framework or args.framework_device) and platform.system() != 'Darwin':
   sys.exit('Framework creation only for Mac OS X')
 framework_dir = os.path.join(cdir, '_framework', polly_toolchain)
 
@@ -238,9 +243,13 @@ if args.fwd != None:
   for x in args.fwd:
     generate_command.append("-D{}".format(x))
 
+timer = detail.timer.Timer()
+
+timer.start('Generate')
 detail.generate_command.run(
     generate_command, build_dir, polly_temp_dir, args.reconfig, logging
 )
+timer.stop()
 
 build_command = [
     'cmake',
@@ -279,25 +288,39 @@ if args.jobs:
     build_command.append('/maxcpucount:{}'.format(args.jobs))
 
 if not args.nobuild:
+  timer.start('Build')
   detail.call.call(build_command, logging)
-  if args.framework:
+  timer.stop()
+
+  if args.framework or args.framework_device:
+    timer.start('Framework creation')
     detail.create_framework.run(
         install_dir,
         framework_dir,
         toolchain_entry.ios_version,
         polly_root,
+        args.framework_device,
         logging
     )
+    timer.stop()
 
 if not args.nobuild:
   os.chdir(build_dir)
-  if args.test:
-    detail.test_command.run(build_dir, args.config, logging)
+  if args.test or args.test_xml:
+    timer.start('Test')
+    detail.test_command.run(build_dir, args.config, logging, args.test_xml)
+    timer.stop()
   if args.pack:
+    timer.start('Pack')
     detail.pack_command.run(args.config, logging, cpack_generator)
+    timer.stop()
 
 if args.open:
   detail.open_project.open(toolchain_entry, build_dir, logging)
 
+print('-')
 print('Log saved: {}'.format(logging.log_path))
+print('-')
+timer.result()
+print('-')
 print('SUCCESS')
