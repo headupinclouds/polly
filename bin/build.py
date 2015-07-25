@@ -82,6 +82,9 @@ parser.add_argument(
     help="Create framework for device (exclude simulator architectures)"
 )
 parser.add_argument(
+    '--strip', action='store_true', help="Run strip/install cmake targets"
+)
+parser.add_argument(
     '--clear',
     action='store_true',
     help="Remove build and install dirs before build"
