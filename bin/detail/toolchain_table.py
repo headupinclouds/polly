@@ -58,7 +58,8 @@ toolchain_table = [
     Toolchain('android-ndk-r10e-api-21-arm64-v8a-clang-35', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-x86', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-8-armeabi-v7a', 'Unix Makefiles'),
-    Toolchain('raspberrypi2-cxx11', 'Unix Makefiles')
+    Toolchain('raspberrypi2-cxx11', 'Unix Makefiles'),
+    Toolchain('llvm-osx-linux', 'Unix Makefiles')
 ]
 
 if os.name == 'nt':
@@ -151,7 +152,7 @@ if os.name == 'posix':
       Toolchain('libcxx', 'Unix Makefiles'),
       Toolchain('libcxx-hid', 'Unix Makefiles'),
       Toolchain('libcxx-omp', 'Unix Makefiles'),
-      Toolchain('sanitize-address', 'Unix Makefiles'),
+      Toolchain('sanitize-address', 'Unix Makefiles')
   ]
 
 def get_by_name(name):
