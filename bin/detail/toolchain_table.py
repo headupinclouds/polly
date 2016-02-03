@@ -1,4 +1,5 @@
 # Copyright (c) 2014, Ruslan Baratov & Luca Martini
+# Copyright (c) 2014, Michele Caini
 # All rights reserved.
 
 import os
@@ -29,6 +30,7 @@ class Toolchain:
     self.is_nmake = (self.generator == 'NMake Makefiles')
     self.is_msvc = self.generator.startswith('Visual Studio')
     self.is_make = self.generator.endswith('Makefiles')
+    self.is_ninja = (self.generator == 'Ninja')
     self.xp = xp
     self.is_xcode = (self.generator == 'Xcode')
     self.multiconfig = (self.is_xcode or self.is_msvc)
@@ -37,7 +39,7 @@ class Toolchain:
 
   def verify(self):
     if self.arch:
-      assert(self.is_nmake or self.is_msvc)
+      assert(self.is_nmake or self.is_msvc or self.is_ninja)
       assert(self.arch == 'amd64' or self.arch == 'x86')
 
     if self.is_nmake or self.is_msvc:
@@ -61,6 +63,7 @@ toolchain_table = [
     Toolchain('android-ndk-r10e-api-21-armeabi-v7a', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-armeabi-v7a-neon', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-armeabi-v7a-neon-clang-35', 'Unix Makefiles'),
+    Toolchain('android-ndk-r10e-api-21-armeabi', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-arm64-v8a', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-arm64-v8a-gcc-49', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-arm64-v8a-gcc-49-hid', 'Unix Makefiles'),
@@ -68,6 +71,8 @@ toolchain_table = [
     Toolchain('android-ndk-r10e-api-21-x86', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-x86-64', 'Unix Makefiles'),
     Toolchain('android-ndk-r10e-api-21-x86-64-hid', 'Unix Makefiles'),
+    Toolchain('android-ndk-r10e-api-21-mips', 'Unix Makefiles'),
+    Toolchain('android-ndk-r10e-api-21-mips64', 'Unix Makefiles'),
     Toolchain('raspberrypi2-cxx11', 'Unix Makefiles')
 ]
 
@@ -84,6 +89,12 @@ if os.name == 'nt':
       Toolchain(
           'nmake-vs-12-2013-win64',
           'NMake Makefiles',
+          arch='amd64',
+          vs_version='12'
+      ),
+      Toolchain(
+          'ninja-vs-12-2013-win64',
+          'Ninja',
           arch='amd64',
           vs_version='12'
       ),
@@ -134,6 +145,9 @@ if platform.system() == 'Linux':
 
 if platform.system() == 'Darwin':
   toolchain_table += [
+      Toolchain('ios-9-2', 'Xcode', ios_version='9.2'),
+      Toolchain('ios-9-2-arm64', 'Xcode', ios_version='9.2'),
+      Toolchain('ios-9-2-armv7', 'Xcode', ios_version='9.2'),
       Toolchain('ios-9-1-armv7', 'Xcode', ios_version='9.1'),
       Toolchain('ios-9-1-arm64', 'Xcode', ios_version='9.1'),
       Toolchain('ios-9-1-dep-7-0-armv7', 'Xcode', ios_version='9.1', ios_min_version='7.0'),
@@ -165,6 +179,9 @@ if platform.system() == 'Darwin':
       Toolchain('ios-nocodesign-9-1', 'Xcode', ios_version='9.1', nocodesign=True),
       Toolchain('ios-nocodesign-9-1-arm64', 'Xcode', ios_version='9.1', nocodesign=True),
       Toolchain('ios-nocodesign-9-1-armv7', 'Xcode', ios_version='9.1', nocodesign=True),
+      Toolchain('ios-nocodesign-9-2', 'Xcode', ios_version='9.2', nocodesign=True),
+      Toolchain('ios-nocodesign-9-2-arm64', 'Xcode', ios_version='9.2', nocodesign=True),
+      Toolchain('ios-nocodesign-9-2-armv7', 'Xcode', ios_version='9.2', nocodesign=True),
       Toolchain('xcode', 'Xcode'),
       Toolchain('xcode-gcc', 'Xcode'),
       Toolchain('osx-10-7', 'Xcode', osx_version='10.7'),
