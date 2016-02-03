@@ -117,7 +117,7 @@ def run(install_dir, framework_dir, ios, polly_root, device, logging, plist=None
       shutil.copy(plist, framework_plist);
 
     plist_text = open(framework_plist).read()
-    plist_text = re.sub(r'__MINIMUM_OS_VERSION__', ios if ios_min is None else ios_min, plist_text)
+    plist_text = re.sub(r'__MINIMUM_OS_VERSION__', ios if ios_min is None else ios, plist_text)
     plist_text = re.sub(r'__BUNDLE_EXECUTABLE__', framework_name, plist_text)
     open(framework_plist, 'w').write(plist_text)
     if device:
