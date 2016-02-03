@@ -12,7 +12,9 @@ class Toolchain:
       arch='',
       vs_version='',
       ios_version='',
+      ios_min_version='',
       osx_version='',
+      osx_min_version='',
       xp=False,
       nocodesign=False,
   ):
@@ -21,7 +23,9 @@ class Toolchain:
     self.arch = arch
     self.vs_version = vs_version
     self.ios_version = ios_version
+    self.ios_min_version = ios_min_version
     self.osx_version = osx_version
+    self.osx_min_version = osx_min_version
     self.is_nmake = (self.generator == 'NMake Makefiles')
     self.is_msvc = self.generator.startswith('Visual Studio')
     self.is_make = self.generator.endswith('Makefiles')
@@ -132,15 +136,15 @@ if platform.system() == 'Darwin':
   toolchain_table += [
       Toolchain('ios-9-1-armv7', 'Xcode', ios_version='9.1'),
       Toolchain('ios-9-1-arm64', 'Xcode', ios_version='9.1'),
-      Toolchain('ios-9-1-dep-7-0-armv7', 'Xcode', ios_version='9.1'),
+      Toolchain('ios-9-1-dep-7-0-armv7', 'Xcode', ios_version='9.1', ios_min_version='7.0'),
       Toolchain('ios-9-1-hid', 'Xcode', ios_version='9.1'),
-      Toolchain('ios-9-1-dep-8-0-hid', 'Xcode', ios_version='9.1'),
+      Toolchain('ios-9-1-dep-8-0-hid', 'Xcode', ios_version='9.1', ios_min_version='8.0'),
       Toolchain('ios-9-1', 'Xcode', ios_version='9.1'),
       Toolchain('ios-9-0', 'Xcode', ios_version='9.0'),
       Toolchain('ios-9-0-armv7', 'Xcode', ios_version='9.0'),
       Toolchain('ios-9-0-i386-armv7', 'Xcode', ios_version='9.0'),
       Toolchain('ios-9-0-wo-armv7s', 'Xcode', ios_version='9.0'),
-      Toolchain('ios-9-0-dep-7-0-armv7', 'Xcode', ios_version='9.0'),
+      Toolchain('ios-9-0-dep-7-0-armv7', 'Xcode', ios_version='9.0', ios_min_version='7.0'),
       Toolchain('ios-8-4', 'Xcode', ios_version='8.4'),
       Toolchain('ios-8-4-arm64', 'Xcode', ios_version='8.4'),
       Toolchain('ios-8-4-armv7', 'Xcode', ios_version='8.4'),
@@ -168,7 +172,7 @@ if platform.system() == 'Darwin':
       Toolchain('osx-10-9', 'Xcode', osx_version='10.9'),
       Toolchain('osx-10-10', 'Xcode', osx_version='10.10'),
       Toolchain('osx-10-11', 'Xcode', osx_version='10.11'),
-      Toolchain('osx-10-10-dep-10-7', 'Xcode', osx_version='10.10'),
+      Toolchain('osx-10-10-dep-10-7', 'Xcode', osx_version='10.10', osx_min_version='10.7'),
       Toolchain('linux-gcc-x64', 'Unix Makefiles'),
   ]
 
