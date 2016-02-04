@@ -1,5 +1,6 @@
 # Copyright (c) 2014, Ruslan Baratov & Luca Martini
 # Copyright (c) 2014, Michele Caini
+# Copyright (c) 2016, David Hirvonen
 # All rights reserved.
 
 import os
@@ -203,6 +204,9 @@ if os.name == 'posix':
       Toolchain('gcc-cxx98', 'Unix Makefiles'),
       Toolchain('libcxx', 'Unix Makefiles'),
       Toolchain('libcxx-64', 'Unix Makefiles'),
+      Toolchain('libcxx-64-hid-fpic', 'Unix Makefiles'),    
+      Toolchain('libcxx-hid', 'Unix Makefiles'),
+      Toolchain('libcxx-hid-fpic', 'Unix Makefiles'),
       Toolchain('libcxx-omp', 'Unix Makefiles'),
       Toolchain('sanitize-address', 'Unix Makefiles'),
   ]
