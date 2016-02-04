@@ -2,6 +2,7 @@
 # All rights reserved.
 
 import detail.call
+import detail.rmtree
 
 import glob
 import os
@@ -23,7 +24,7 @@ def get_libname_soversion(libs):
       return x
   sys.exit('Unexpected version/soversion format: {}'.format(libs))
 
-def run(install_dir, framework_dir, ios, polly_root, device, logging):
+def run(install_dir, framework_dir, ios, polly_root, device, logging, plist=None, identity=None):
   libs_path = os.path.join(install_dir, 'lib')
   libs = glob.glob(os.path.join(libs_path, '*'))
   try:
@@ -53,8 +54,7 @@ def run(install_dir, framework_dir, ios, polly_root, device, logging):
   framework_dir = os.path.join(
       framework_dir, '{}.framework'.format(framework_name)
   )
-  if os.path.exists(framework_dir):
-    shutil.rmtree(framework_dir)
+  detail.rmtree.rmtree(framework_dir)
 
   if ios:
     lib_dir = os.path.join(framework_dir)
@@ -109,10 +109,13 @@ def run(install_dir, framework_dir, ios, polly_root, device, logging):
     detail.call.call(link, logging)
   else:
     framework_plist = os.path.join(framework_dir, 'Info.plist')
-    shutil.copy(
+    if plist is None:
+      shutil.copy(
         os.path.join(polly_root, 'scripts', 'Info.plist'),
-        framework_plist
-    )
+        framework_plist);
+    else:
+      shutil.copy(plist, framework_plist);
+
     plist_text = open(framework_plist).read()
     plist_text = re.sub(r'__MINIMUM_OS_VERSION__', ios, plist_text)
     plist_text = re.sub(r'__BUNDLE_EXECUTABLE__', framework_name, plist_text)
@@ -128,8 +131,13 @@ def run(install_dir, framework_dir, ios, polly_root, device, logging):
           logging,
           ignore=True
       )
+      
+    if identity is None:
+      identity = 'iPhone Developer';
+
     sign_cmd = [
-        'codesign', '--force', '--sign', 'iPhone Developer', framework_dir
+        'codesign', '--force', '--sign', identity, framework_dir
     ]
     detail.call.call(sign_cmd, logging)
+
   print('Framework created: {}'.format(framework_dir))
