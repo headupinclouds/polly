@@ -237,6 +237,10 @@ if platform.system() == 'Linux':
 
 if platform.system() == 'Darwin':
   toolchain_table += [
+      Toolchain('ios-10-1', 'Xcode', ios_version='10.1'),
+      Toolchain('ios-10-1-arm64', 'Xcode', ios_version='10.1'),
+      Toolchain('ios-10-1-armv7', 'Xcode', ios_version='10.1'),
+      Toolchain('ios-10-1-wo-armv7s', 'Xcode', ios_version='10.1'),
       Toolchain('ios-10-0', 'Xcode', ios_version='10.0'),
       Toolchain('ios-10-0-arm64', 'Xcode', ios_version='10.0'),
       Toolchain('ios-10-0-armv7', 'Xcode', ios_version='10.0'),
@@ -301,6 +305,10 @@ if platform.system() == 'Darwin':
       Toolchain('ios-nocodesign-10-0-arm64', 'Xcode', ios_version='10.0', nocodesign=True),
       Toolchain('ios-nocodesign-10-0-armv7', 'Xcode', ios_version='10.0', nocodesign=True),
       Toolchain('ios-nocodesign-10-0-wo-armv7s', 'Xcode', ios_version='10.0', nocodesign=True),
+      Toolchain('ios-nocodesign-10-1', 'Xcode', ios_version='10.1', nocodesign=True),
+      Toolchain('ios-nocodesign-10-1-arm64', 'Xcode', ios_version='10.1', nocodesign=True),
+      Toolchain('ios-nocodesign-10-1-armv7', 'Xcode', ios_version='10.1', nocodesign=True),
+      Toolchain('ios-nocodesign-10-1-wo-armv7s', 'Xcode', ios_version='10.1', nocodesign=True),
       Toolchain('xcode', 'Xcode'),
       Toolchain('xcode-gcc', 'Xcode'),
       Toolchain('xcode-hid-sections', 'Xcode'),    
@@ -313,6 +321,7 @@ if platform.system() == 'Darwin':
       Toolchain('osx-10-12', 'Xcode', osx_version='10.12'),
       Toolchain('osx-10-10-dep-10-7', 'Xcode', osx_version='10.10'),
       Toolchain('osx-10-10-dep-10-9-make', 'Unix Makefiles'),
+      Toolchain('osx-10-11-make', 'Unix Makefiles'),
       Toolchain('osx-10-11-sanitize-address', 'Xcode', osx_version='10.11'),
       Toolchain('linux-gcc-x64', 'Unix Makefiles'),
   ]
