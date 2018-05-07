@@ -14,12 +14,12 @@ Collection of CMake toolchain files and scripts.
 [appveyor_status]: https://ci.appveyor.com/api/projects/status/8x6thwc05mhvdxmo?svg=true
 [appveyor_builds]: https://ci.appveyor.com/project/ruslo/polly/history
 
-Every toolchain defines compiler/flags and two variables:
+Every toolchain defines the compiler/flags/definitions and two variables:
 * `POLLY_TOOLCHAIN_NAME`
 * `POLLY_TOOLCHAIN_TAG`
 
-[First](https://github.com/ruslo/polly/wiki/Used-variables#polly_toolchain_name)
-variable will be printed while processing file:
+[First](https://github.com/ruslo/polly/wiki/Used-variables#polly_toolchain_name),
+some key variables will be printed while processing the CMake files:
 ```
 -- [polly] Used toolchain: Name of toolchain A
 -- The CXX compiler identification is Clang 5.0.0
@@ -34,12 +34,12 @@ variable will be printed while processing file:
 -- Generating done
 -- Build files have been written to: ...
 ```
-[Second](https://github.com/ruslo/polly/wiki/Used-variables#polly_toolchain_tag)
-variable coincide with toolchain file name and *can* be used to define `CMAKE_INSTALL_PREFIX` like:
+[Second](https://github.com/ruslo/polly/wiki/Used-variables#polly_toolchain_tag),
+variables coincide with the toolchain filename and *can* be used to define `CMAKE_INSTALL_PREFIX` like:
 ```cmake
 set(CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/_install/${POLLY_TOOLCHAIN_TAG}")
 ```
-In this case targets can coexist simultaneously:
+In this case, all targets can coexist simultaneously:
 ```
  - Project\ -
             - CMakeLists.txt
@@ -53,7 +53,7 @@ In this case targets can coexist simultaneously:
                         - ...
 ```
 
-*Note*: This is a core idea of the tagged builds in [hunter](https://github.com/ruslo/hunter#tagged-builds) package manager.
+*Note*: This is a core idea of the tagged builds in the [hunter](https://github.com/ruslo/hunter#tagged-builds) package manager.
 
 ## New documentation
 
@@ -97,7 +97,7 @@ In this case targets can coexist simultaneously:
  * [linux-gcc-x64](https://github.com/ruslo/polly/wiki/Toolchain-list#linux-gcc-x64)
 
 ## Usage
-Just define [CMAKE_TOOLCHAIN_FILE][3] variable:
+Just define a [CMAKE_TOOLCHAIN_FILE][3] variable:
 ```bash
 > cmake -H. -B_builds/clang-libstdcxx -DCMAKE_TOOLCHAIN_FILE=${POLLY_ROOT}/clang-libstdcxx.cmake -DCMAKE_VERBOSE_MAKEFILE=ON
 -- [polly] Used toolchain: clang / GNU Standard C++ Library (libstdc++) / c++11 support
@@ -120,13 +120,14 @@ Take a look at make output, you must [see][6] `-stdlib=libstdc++` string:
 
 ## polly.py
 
-This is a python [script](https://github.com/ruslo/polly/tree/master/bin) that wrap cmake for you and automatically set:
-* build directory for your toolchain. E.g. `_builds/xcode`, `_builds/libcxx-Debug`, `_builds/nmake-Release`
-* local install directory. E.g. `_install/vs-12-2013-x64`, `_install/libcxx`
-* start an IDE project (Xcode, Visual Studio) if option `--open` passed
-* run `ctest` after the build done if option `--test` passed
-* run `cpack` after the build done if option `--pack` passed
-* create `OS X`/`iOS` framework if option `--framework` passed (can be used for broken iOS framework creation on CMake)
+This is a python [script](https://github.com/ruslo/polly/tree/master/bin) that wraps `cmake` for you and performs the the following steps:
+* creates a local standardized toolchain specific build directory: E.g. `_builds/xcode`, `_builds/libcxx-Debug`, `_builds/nmake-Release`
+* creates a local standardized toolchain specific install directory: E.g. `_install/vs-12-2013-x64`, `_install/libcxx`
+* creates a local standardized toolchain specific log directory with a history of CMake build + test logs: E.g. `_logs/polly/xcode/log-0.txt `, `_logs/polly/ios-10-3-dep-9-0-bitcode/log.txt`
+* starts an IDE project (Xcode, Visual Studio) if option `--open` passed
+* runs `ctest` after the build is done if option `--test` is passed
+* runs `cpack` after the build is done if option `--pack` is passed
+* creates an `OS X`/`iOS` framework if option `--framework` is passed (can be used for broken iOS framework creation on CMake)
 
 Example of usage (also see `polly.py --help`):
 * build Debug Xcode project:
@@ -139,7 +140,7 @@ Example of usage (also see `polly.py --help`):
 ## Examples
 See [examples](https://github.com/ruslo/polly/tree/master/examples).
 Please [read](https://github.com/ruslo/0/wiki/CMake) coding style and
-agreements before start looking through examples (may explain a lot).
+agreements before starting to looking through the examples (it may explain a lot).
 Take a look at the [Travis](https://travis-ci.org/) config files:
 [mac](https://github.com/ruslo/polly/blob/master/.travis.yml) and [linux](https://github.com/ruslo/polly/blob/linux/.travis.yml),
 it's quite self-explanatory.
