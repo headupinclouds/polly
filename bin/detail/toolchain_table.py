@@ -405,6 +405,7 @@ if platform.system() == 'Darwin':
       Toolchain('ios-11-4-dep-9-3-arm64-armv7', 'Xcode', ios_version='11.4'),
       Toolchain('ios-11-4-dep-9-3', 'Xcode', ios_version='11.4'),
       Toolchain('ios-11-4-dep-9-4-arm64', 'Xcode', ios_version='11.4'),
+      Toolchain('ios-11-4-dep-9-4-arm64-no-darwin', 'Xcode', ios_version='11.4'),
       Toolchain('ios-11-4-dep-9-3-arm64-hid-sections-lto-cxx11', 'Xcode', ios_version='11.4'),
       Toolchain('ios-11-4-dep-8-0-arm64-armv7-hid-sections-lto-cxx11', 'Xcode', ios_version='11.4'),
       Toolchain('ios-11-4-dep-8-0-arm64-hid-sections-lto-cxx11', 'Xcode', ios_version='11.4'),
